@@ -1,0 +1,35 @@
+{% extends 'polls/base.html' %}
+
+{% block content %}
+
+<h1>{{ question.question_text }}</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+{% if question.choice_set.all %}
+<form action="{% url 'polls:vote' question.id %}" method="post">
+{% csrf_token %}
+    {% for choice in question.choice_set.all %}
+        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
+        <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
+    {% endfor %}
+    <br />
+    <input type="submit" value="Vote" />
+</form>
+{% else %}
+    <h4> No choice yet :( .. You can add choice below :) </h4>
+{% endif %}
+<br />
+<a class="body" href="{% url 'polls:results' question.id %}">Go to Results</a>
+<br />
+<br />
+{% if error_message2 %}<p><strong>{{ error_message2 }}</strong></p>{% endif %}
+<form action="{% url 'polls:add' question.id %}" method="post">
+{% csrf_token %}
+    <input type="text" name="choice_text" />
+    <input type="submit" value="Add a Choice" />
+</form>
+
+<a class="body" href="{% url 'polls:index' %}">Back to Questions</a>
+
+{% endblock %}

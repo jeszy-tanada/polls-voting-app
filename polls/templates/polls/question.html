@@ -1,0 +1,18 @@
+{% extends 'polls/base.html' %}
+
+{% block content %}
+
+<h1>Add Question</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="" method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Add" />
+</form>
+
+<form action="{% url 'polls:index' %}" method="get">
+    <input type="submit" value="Questions" />
+</form>
+
+{% endblock %}
